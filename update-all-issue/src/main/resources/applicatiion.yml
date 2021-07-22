@@ -1,0 +1,40 @@
+micronaut:
+  application:
+    name: example-application
+
+datasources:
+  default:
+    driverClassName: org.postgresql.Driver
+    schema-generate: CREATE_DROP
+    dialect: POSTGRES
+    url: jdbc:postgresql://localhost:5432/postgres
+    schema: test
+    username: test
+    password: test
+    connection-timeout: 1000
+
+# DATABASE
+jpa:
+  default:
+    properties:
+      packages-to-scan:
+        - 'org.example.persistence'
+      hibernate:
+        #dialect: org.hibernate.dialect.PostgreSQLDialect
+        bytecode:
+          provider: none
+        hbm2ddl:
+          auto: validate
+        show_sql: true
+        session_factory:
+          interceptor: org.example.persistence.SkipUpdateOnConditionInterceptor
+        jdbc:
+          batch_size: 5
+          order_updates: true
+          batch_versioned_data: true
+          time_zone: UTC
+
+flyway:
+  datasources:
+    default:
+      enabled: true
